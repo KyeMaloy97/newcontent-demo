@@ -15,6 +15,8 @@ Unless you have already made one as described above, this step will also create 
 
 ### Cartridge operand install video
 
+https://user-images.githubusercontent.com/24469095/112845372-b3c0ff80-909c-11eb-852d-0d03bbbbba48.mov
+
 The operand is installed when all the status' are marked as True, as seen here:
 <img width="1278" alt="Screenshot 2021-03-29 at 2 37 35 PM" src="https://user-images.githubusercontent.com/24469095/112845493-d2bf9180-909c-11eb-9a42-0a1ca779d8bf.png">
 
