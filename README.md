@@ -48,18 +48,18 @@ You will need to decide on somewhere to push the image too. Openshift clusters c
 
 ### 3.1 Build the Docker image
 
-From the root of the project, and with Docker running locally, run:
+From the root of the project, and with Docker running locally, run the following with your route instead of `ROUTE_TO_REGISTRY`:
 
 ```
-docker build -t route/to/registry/newcontent:v1 .
+docker build -t ROUTE_TO_REGISTRY/newcontent:v1 .
 ```
 
 ### 3.2 Push to a Docker registry
 
-Simply run:
+Simply run the following, again with your route instead of ``ROUTE_TO_REGISTRY`` :
 
 ```
-docker push route/to/registry/newcontent:v1
+docker push ROUTE_TO_REGISTRY/newcontent:v1
 ```
 
 The docker image has now been pushed up to your registry. The tag you gave the image needs to be added to the `combined_deployment.yaml`, so note what you chose for the next step.
@@ -70,13 +70,13 @@ You'll need to create a new series of objects in your cluster:
 
 * A `Deployment`, which contains the code for the new page, runs it in a container and exposes a port.
 * A `Service` that exposes the new deplooyment and helps route traffc to it.
-* Route `ConfigMap` to help proxy the traffic from the AutomationUI dashboard to your new service.
+* Proxy `ConfigMap` to help proxy the traffic from the AutomationUI dashboard to your new service.
 * Navigation `ConfigMap` to adds a menu item to access the new page.
 
 We now need to use the YAML you downloaded at the start of this tutorial. <strong>It needs a small edit on line 49</strong>, to point to your clusters IAF project. Edit this line and replace `YOUR_IAF_PROJECT` with the project you chose to install IAF too (same one we used earlier).
 
 ```
-proxy_pass http://newpage-service.YOUR_IAF_PROJECT.svc:80/;
+proxy_pass http://newcontent-service.YOUR_IAF_PROJECT.svc:80/;
 ```
 
 We also need to update the image source URL so Openshift knows where to pull your image from. Change line 16 to use the full URL (tag) of the image you created and pushed in [Step 3](#Step3). The line you must change looks like this:
