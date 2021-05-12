@@ -46,7 +46,7 @@ data:
     location /newcontent/
     {
     access_by_lua_file /nginx_data/checkjwt.lua;
-    proxy_pass http://newcontent-service.iaf-demo-project.svc:80/;
+    proxy_pass http://newcontent-service.YOUR_IAF_PROJECT.svc:80/;
     }
 
 ---
