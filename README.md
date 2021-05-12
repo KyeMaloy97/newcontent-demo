@@ -42,7 +42,7 @@ oc get secrets -n ibm-common-services platform-auth-idp-credentials -ojsonpath='
 
 ## 3. Build and push the Docker image
 
-We now need to build and push the Docker image that will become the basis of our `Deployment`. If you have a Docker registry, feel free to build and push the image there. For this tutorial, we will push to the included Docker registry included in every Openshift instance.
+We now need to build and push the Docker image that will become the basis of our `Deployment`.
 
 You will need to decide on somewhere to push the image too. Openshift clusters can be configured to act as their own image registries, but setting that up is outside the scope of this walkthrough. See [Internal Registry Overview](https://docs.openshift.com/container-platform/3.11/install_config/registry/index.html) for more information.
 
