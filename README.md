@@ -56,13 +56,13 @@ docker build -t ROUTE_TO_REGISTRY/newcontent:v1 .
 
 ### 3.2 Push to a Docker registry
 
-Simply run the following, again with your route instead of ``ROUTE_TO_REGISTRY`` :
+Simply run the following, again with your route instead of ``IMAGE_URL_REGISTRY`` :
 
 ```
-docker push ROUTE_TO_REGISTRY/newcontent:v1
+docker push IMAGE_URL_REGISTRY/newcontent:v1
 ```
 
-The docker image has now been pushed up to your registry. The tag you gave the image needs to be added to the `combined_deployment.yaml`, so note what you chose for the next step.
+The docker image has now been pushed up to your registry. The tag you gave the image needs to be added to the `combined_deployment.yaml`, so remember where you pushed the image for the next step.
 
 ## 4. Create the new objects on your cluster
 
@@ -73,18 +73,18 @@ You'll need to create a new series of objects in your cluster:
 * Proxy `ConfigMap` to help proxy the traffic from the AutomationUI dashboard to your new service.
 * Navigation `ConfigMap` to adds a menu item to access the new page.
 
-We now need to use the YAML you downloaded at the start of this tutorial. <strong>It needs a small edit on line 49</strong>, to point to your clusters IAF project. Edit this line and replace `YOUR_IAF_PROJECT` with the project you chose to install IAF too (same one we used earlier).
+We also need to update the image source URL so Openshift knows where to pull your image from. Change <strong>line 16</strong> to use the full URL (tag) of the image you created and pushed in [Step 3](#Step3). The line you must change looks like this:
 
 ```
-proxy_pass http://newcontent-service.YOUR_IAF_PROJECT.svc:80/;
+image: IMAGE_URL_REGISTRY/newcontent:v1
 ```
 
-We also need to update the image source URL so Openshift knows where to pull your image from. Change line 16 to use the full URL (tag) of the image you created and pushed in [Step 3](#Step3). The line you must change looks like this:
+
+We also need to make a small change on <strong>line 49</strong>, to point to your clusters IAF project. Edit this line and replace `PROJECT_NAMESPACE` with the project you chose to install IAF too (same one we used earlier).
 
 ```
-image: ROUTE_TO_REGISTRY/newcontent:v1
+proxy_pass http://newcontent-service.PROJECT_NAMESPACE.svc:80/;
 ```
-
 
 After you have updated the URL for your image, we can apply the YAML to your cluster with the following command:
 
@@ -100,12 +100,6 @@ service/newcontent-service created
 configmap/newcontent-proxy created
 configmap/newcontent-nav-ext created
 ```
-
-If you inspect this YAML you'll see the 4 objects, seperated by `---`.
-
-In the last two objects you'll see these lines `icpdata_addon: "true"` and `icpdata_addon_version: "v1"`. These tell AutomationUI that the objects extend it's functionality. 
-
-Whenever you update a `ConfigMap`, you should change the `icpdata_addon_version: "v1` value to let the `Watcher` know that a change has gone into your cluster, for example `v1` could become `v2` after an update.
 
 ## 5. Load into your new page
 
@@ -139,5 +133,5 @@ This file is very simple, and the AutomationUI hooks found in the `<link>` and `
 
 * If you applied the YAML and find no changes to the nav menu, or get a 400 error code, the cache and cookies created by your browser may be the cause of the problem. Try hard refreshing, clearing the cache and cookies or just restarting your browser.
 
-* Helpful pods for assessing issues with routing and new content are the two `ibm-nginx` pods and the `zen-watcher` pod. The logs from them can provide useful details on issues, and entering the `ibm-nginx` pod and checking for NGINX configurations can helo when looking into proxy issues.
+* Helpful pods for assessing issues with routing and new content are the two `ibm-nginx` pods and the `zen-watcher` pod. The logs from them can provide useful details on issues, and entering the `ibm-nginx` pod and checking for NGINX configurations can help when looking into proxy issues.
 
